@@ -1,22 +1,26 @@
-import { useRef, useState } from "react";
+import { useState, useEffect } from "react";
 import Input from "../../UI/Input";
 import styles from "./MealItemForm.module.css";
 
 const MealItemForm = (props) => {
   const [amountIsValid, setAmountIsValid] = useState(true);
-  const amountInputRef = useRef();
+  const [quantity, setQuantity] = useState(1);
+
+  const quantityChangeHandler = (e) => {
+    setQuantity(e.target.value);
+  };
+
+  useEffect(() => {
+    if (props.cartItems.length === 0) {
+      setQuantity(1);
+    }
+  }, [props.cartItems]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-
-    const enteredAmount = amountInputRef.current.value;
+    const enteredAmount = quantity;
     const enteredAmountNumber = +enteredAmount;
-
-    if (
-      enteredAmount.trim().length === 0 ||
-      enteredAmountNumber < 1 ||
-      enteredAmountNumber > 5
-    ) {
+    if (enteredAmountNumber < 1 || enteredAmountNumber > 5) {
       setAmountIsValid(false);
       return;
     }
@@ -26,14 +30,14 @@ const MealItemForm = (props) => {
   return (
     <form className={styles.form} onSubmit={submitHandler}>
       <Input
-        ref={amountInputRef}
         label="Amount"
         input={{
           id: "amount",
           type: "number",
-          min: "1",
-          max: "5",
-          defaultValue: "1",
+          min: 1,
+          max: 5,
+          value: quantity,
+          onChange: quantityChangeHandler,
         }}
       />
       <button>+ Add</button>
