@@ -28,7 +28,8 @@ const Checkout = (props) => {
     const enteredNameIsValid = !isEmpty(enteredName);
     const enteredAddressIsValid = !isEmpty(enteredAddress);
     const enteredCityIsValid = !isEmpty(enteredCity);
-    const enteredPincodeIsValid = isSixChars(enteredPincode);
+    const enteredPincodeIsValid =
+      isSixChars(enteredPincode) && enteredPincode.match(/^[0-9]+$/);
 
     setFormInputsValidity({
       name: enteredNameIsValid,
@@ -74,24 +75,30 @@ const Checkout = (props) => {
       <div className={nameControlClasses}>
         <label htmlFor="name">Your Name</label>
         <input type="text" id="name" ref={nameInputRef} />
-        {!formInputsValidity.name && <p>Please enter a valid name!</p>}
+        {!formInputsValidity.name && (
+          <p className={styles.error}>Please enter a valid name!</p>
+        )}
       </div>
       <div className={addressControlClasses}>
         <label htmlFor="address">Address</label>
         <input type="text" id="address" ref={addressInputRef} />
-        {!formInputsValidity.address && <p>Please enter a valid address!</p>}
+        {!formInputsValidity.address && (
+          <p className={styles.error}>Please enter a valid address!</p>
+        )}
       </div>
       <div className={pincodeControlClasses}>
         <label htmlFor="pincode">PIN Code</label>
         <input type="text" id="pincode" ref={pincodeInputRef} />
         {!formInputsValidity.pincode && (
-          <p>Pincode should be 6 characters long!</p>
+          <p className={styles.error}>Pincode entered is not valid!</p>
         )}
       </div>
       <div className={cityControlClasses}>
         <label htmlFor="city">City</label>
         <input type="text" id="city" ref={cityInputRef} />
-        {!formInputsValidity.city && <p>Please enter a valid city!</p>}
+        {!formInputsValidity.city && (
+          <p className={styles.error}>Please enter a valid city!</p>
+        )}
       </div>
       <div className={styles.actions}>
         <button type="button" onClick={props.onCancel}>

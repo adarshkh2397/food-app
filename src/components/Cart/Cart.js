@@ -35,7 +35,7 @@ const Cart = (props) => {
     setIsSubmitting(true);
     try {
       const response = await fetch(
-        "https://react-http-app-cd8bd-default-rtdb.firebaseio.com/orders.json",
+        `${process.env.REACT_APP_FIREBASE_DOMAIN}/orders.json`,
         {
           method: "POST",
           body: JSON.stringify({
